@@ -1,79 +1,158 @@
+# ===============================
 # TCPDUMP COMMAND REFERENCE
+# ===============================
 
-## Interface Commands
+# List available interfaces
+tcpdump -D
 
-- **List available interfaces**  
-  `tcpdump -D`
+# Capture packets from loopback interface with Hex + ASCII
+sudo tcpdump -i lo -X
 
-- **Capture packets from loopback interface with Hex + ASCII**  
-  `sudo tcpdump -i lo -X`
+# Capture packets from loopback interface in ASCII only
+sudo tcpdump -i lo -A
 
-- **Capture packets from loopback interface in ASCII only**  
-  `sudo tcpdump -i lo -A`
+# ===============================
+# INTERFACE + FILTER COMMANDS
+# ===============================
 
----
+# Default capture on <network interface>
+sudo tcpdump -i <network interface>
 
-## Interface + Filter Commands
+# Capture without resolving DNS or service names
+sudo tcpdump -i <network interface> -n
 
-- **Capture on a specific interface**  
-  `sudo tcpdump -i <network interface>`
+# Capture packets to/from a specific host
+sudo tcpdump -i <network interface> -n host <ip address>
 
-- **Capture only TCP packets**  
-  `sudo tcpdump -i <network interface> tcp`
+# Filter by source IP
+sudo tcpdump -i <network interface> -n src <ip address>
 
-- **Capture only UDP packets**  
-  `sudo tcpdump -i <network interface> udp`
+# Filter by destination IP
+sudo tcpdump -i <network interface> -n dst <ip address>
 
-- **Capture traffic from a specific IP address**  
-  `sudo tcpdump -i <network interface> host <ip address>`
+# Capture packets from/to an entire network
+sudo tcpdump -i <network interface> -n net <network>/<CIDR>
 
-- **Capture traffic from a specific source IP address**  
-  `sudo tcpdump -i <network interface> src <ip address>`
+# Capture packets by specific port
+sudo tcpdump -i <network interface> -n port <port number>
 
-- **Capture traffic to a specific destination IP address**  
-  `sudo tcpdump -i <network interface> dst <ip address>`
+# Filter by source port
+sudo tcpdump -i <network interface> -n src port <port number>
 
-- **Capture traffic to or from a specific IP**  
-  `sudo tcpdump -i <network interface> host <ip address>`
+# Source IP and source port combination
+sudo tcpdump -i <network interface> -n src <ip address> and src port <port number>
 
----
+# Exclude a specific port
+sudo tcpdump -i <network interface> -n src <ip address> and not port <port number>
 
-## Port-Based Filtering
+# Complex filter with source, destination, and port exclusion
+sudo tcpdump -i <network interface> -n 'src <ip address> and dst <ip address> and not (port <port number> or port <port number>)'
 
-- **Capture traffic on port 80 (HTTP)**  
-  `sudo tcpdump -i <network interface> port 80`
+# ICMP traffic only (e.g., ping)
+sudo tcpdump -i <network interface> -n icmp
 
-- **Capture traffic from source port 443 (HTTPS)**  
-  `sudo tcpdump -i <network interface> src port 443`
+# UDP traffic only
+sudo tcpdump -i <network interface> -n udp
 
-- **Capture traffic to destination port 53 (DNS)**  
-  `sudo tcpdump -i <network interface> dst port 53`
+# TCP traffic only
+sudo tcpdump -i <network interface> -n tcp
 
----
+# ARP traffic only
+sudo tcpdump -i <network interface> -n arp
 
-## Writing to and Reading from Files
+# ===============================
+# WRITE & READ PCAP FILES
+# ===============================
 
-- **Capture and write to file**  
-  `sudo tcpdump -i <network interface> -w capture.pcap`
+# Save packets to a file
+sudo tcpdump -i <network interface> -n -w ~/Desktop/output.pcap
 
-- **Read from a .pcap file**  
-  `tcpdump -r capture.pcap`
+# Read packets from a saved pcap file
+tcpdump -r ~/Desktop/output.pcap
 
----
+# Count packets in a capture file
+tcpdump -r <file.pcap> --count
 
-## Additional Options
+# Read only first N packets from capture
+tcpdump -r <file.pcap> -c <number>
 
-- **Limit captured packets to 100**  
-  `sudo tcpdump -i <network interface> -c 100`
+# Read without timestamps
+tcpdump -r <file.pcap> -t
 
-- **Display with timestamps**  
-  `sudo tcpdump -tttt -i <network interface>`
+# Show timestamps in raw seconds
+tcpdump -r <file.pcap> -tt
 
-- **Show only packet headers (no payload)**  
-  `sudo tcpdump -i <network interface> -v`
+# Show timestamps as delta between packets
+tcpdump -r <file.pcap> -ttt
 
-- **Show more packet details**  
-  `sudo tcpdump -i <network interface> -vv`
+# Show full readable date and time
+tcpdump -r <file.pcap> -tttt
 
-- **Show full packet details**  
-  `sudo tcpdump -i <network interface> -vvv`
+# ===============================
+# PCAP INVESTIGATION SAMPLES
+# ===============================
+
+# Show packets with timestamps
+tcpdump -tt -r <file.pcap>
+
+# Filter HTTP GET/POST requests on port 80
+tcpdump -r <file.pcap> -tt port 80 | grep -E "GET|POST"
+
+# Look for malicious .exe files
+tcpdump -r <file.pcap> -tt port 80 | grep -E "<filename>.exe"
+
+# Extract payload for deeper analysis (N lines after match)
+tcpdump -r <file.pcap> -tt -A | grep -E "<filename>.exe" -A <number> | less
+
+# ===============================
+# IP & PORT STATISTICS
+# ===============================
+
+# Count unique source IPs in TCP traffic
+tcpdump -tt -r <file.pcap> -n tcp | cut -d " " -f 3 | cut -d "." -f 1-4 | sort | uniq -c | sort -nr
+
+# Count unique destination IPs in TCP traffic
+tcpdump -tt -r <file.pcap> -n tcp | cut -d " " -f 5 | cut -d "." -f 1-4 | sort | uniq -c | sort -nr
+
+# Count ports used by a specific source-destination pair
+tcpdump -tt -r <file.pcap> -n 'tcp and src <ip address> and dst <ip address>' | cut -d " " -f 3 | cut -d "." -f 5 | sort | uniq -c | sort -nr
+
+# ===============================
+# BEHAVIORAL + MALWARE SIGNS
+# ===============================
+
+# Detect GET/POST requests between suspected hosts
+tcpdump -tt -r <file.pcap> src <ip address> and dst <ip address> | grep -E "GET|POST"
+
+# Extract ASCII content between suspected hosts
+tcpdump -tt -r <file.pcap> src <ip address> and dst <ip address> -c <number> -A
+
+# Detect known malicious User-Agent
+tcpdump -tt -r <file.pcap> | grep "User-Agent: <malicious-agent>"
+
+# Capture all traffic to/from specific malicious IP
+tcpdump -tt -r <file.pcap> host <ip address>
+
+# Search for exposed credentials
+tcpdump -tt -r <file.pcap> host <ip address> -A | grep -i 'user\|pass\|login' | grep -v User-Agent
+
+# Look for suspicious filename patterns
+tcpdump -tt -r <file.pcap> host <ip address> -A | grep "filename"
+
+# Look for Telegram links (C2 indicator)
+tcpdump -tt -r <file.pcap> | grep "t.me"
+
+# Scan for DLL file mentions
+tcpdump -tt -r <file.pcap> | grep dll -A <number>
+
+# ===============================
+# ANALYSIS CHECKLIST
+# ===============================
+
+# - Inspect all GET and POST requests
+# - Look for unknown or suspicious User-Agents
+# - Trace IPs with repeated malicious behavior
+# - Check for .exe, .dll, or hidden file references
+# - Look for Telegram links or C2 indicators
+# - Decode any suspicious URL and check with VirusTotal
+

@@ -4,7 +4,7 @@ A complete reference guide for analyzing packet captures using **Wireshark**.
 
 ---
 
-## 📥 Capture Filters (Before Capture)
+## Capture Filters (Before Capture)
 
 Use **Capture Filters** to filter packets while capturing traffic (more efficient than Display Filters).
 
@@ -97,11 +97,11 @@ Use **Display Filters** to inspect specific packet details *after* capture.
 
 ---
 
-## 🧮 Display Filter Expressions
+##  Display Filter Expressions
 
 Useful advanced expressions for deep packet inspection:
 
-### 🔍 Basic Examples
+### Basic Examples
 
 - Match IP  
   `ip.addr == <ip address>`
@@ -112,7 +112,7 @@ Useful advanced expressions for deep packet inspection:
 - Match domains using regex  
   `http.host matches "acme\\.(org|com|net)"`
 
-### 🧩 Logical Operators
+### Logical Operators
 
 - Match SYN flag from a specific IP  
   `ip.src == <ip address> and tcp.flags.syn == 1`
@@ -120,7 +120,7 @@ Useful advanced expressions for deep packet inspection:
 - Match multiple HTTP methods  
   `http.request.method in {"GET", "POST"}`
 
-### 🔪 Slice Operators
+### Slice Operators
 
 - Match MAC prefix  
   `eth.src[0:3] == 00:00:83`
@@ -128,7 +128,7 @@ Useful advanced expressions for deep packet inspection:
 - Match last 4 bytes  
   `frame[-4:4] == 0.1.2.3`
 
-### ⚙️ Binary Match
+### Binary Match
 
 - TCP SYN check  
   `tcp.flags & 0x02`
@@ -141,7 +141,7 @@ Useful advanced expressions for deep packet inspection:
 
 ---
 
-## ⚒️ Useful Wireshark Tools
+## Useful Wireshark Tools
 
 | Tool | Purpose |
 |------|---------|
@@ -154,7 +154,7 @@ Useful advanced expressions for deep packet inspection:
 
 ---
 
-## 🔍 Wireshark Malware Analysis Workflow
+## Wireshark Malware Analysis Workflow
 
 1. Open `.pcap` in Wireshark  
 2. Go to **Statistics → Protocol Hierarchy**  
@@ -173,7 +173,7 @@ Useful advanced expressions for deep packet inspection:
 
 ---
 
-## 🧠 Practice Lab
+## Practice Lab
 
 Practice malware traffic analysis using **real-world PCAPs** here:
 

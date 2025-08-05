@@ -19,6 +19,7 @@ I’m a cybersecurity enthusiast and ethical hacker with hands on experience acr
 - 🛡️ SOC Analysis
 - 🧪 Digital Forensics 
 - 🌐 IoT & Cloud Security
+  
 **Certifications earned:**
 
 - PJPT • CEH v12 • Security+

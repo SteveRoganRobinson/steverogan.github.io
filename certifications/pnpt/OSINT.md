@@ -1,5 +1,5 @@
 
-# OSINT Notes for tcm-sec.com
+# OSINT Notes
 
 ## SOC Puppets
 

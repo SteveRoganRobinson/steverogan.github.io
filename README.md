@@ -5,7 +5,7 @@ My cybersecurity portfolio and learning journey
 
 🎓 Graduate Student at Rowan University  
 🔐 Aspiring Cybersecurity Engineer | Offensive & Defensive Security Enthusiast  
-🏋️ State Level Powerlifter | Tech + Fitness = Focused Discipline  
+🏋️ Powerlifter | Tech + Fitness = Focused Discipline  
 
 ---
 

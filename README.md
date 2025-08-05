@@ -15,11 +15,10 @@ I’m a cybersecurity enthusiast and ethical hacker with hands on experience acr
 
 **Key focus areas:**
 
-- 🔍 Penetration Testing (Active Directory, Privilege Escalation, Lateral Movement)  
-- 🛡️ SOC Analysis (Wireshark, Snort, Sysmon, Phishing Email Investigation)  
-- 🧪 Digital Forensics (Autopsy, USB image analysis, Evidence Reporting)  
-- 🌐 IoT & Cloud Security (via academic research and coursework)
-
+- 🔍 Penetration Testing
+- 🛡️ SOC Analysis
+- 🧪 Digital Forensics 
+- 🌐 IoT & Cloud Security
 **Certifications earned:**
 
 - PJPT • CEH v12 • Security+

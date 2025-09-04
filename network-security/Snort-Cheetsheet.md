@@ -177,6 +177,3 @@ Create rules visually:
 👉 [Snorpy Rule Generator](https://anir0y.in/snort2-rulgen/)
 
 ---
-
-> ✍️ Created for quick revision and red teaming/blue teaming labs.  
-> For feedback or suggestions, contact [YourName] or open an issue.
